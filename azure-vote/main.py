@@ -28,7 +28,7 @@ logger.addHandler(
 # TODO: Setup exporter
 exporter = metrics_exporter.new_metrics_exporter(
     enable_standard_metrics=True,
-    connection_string='InstrumentationKey={guid}'
+    connection_string=f'InstrumentationKey={InstrumentationKey}'
 )
 
 # Tracing
