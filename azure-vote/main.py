@@ -16,7 +16,7 @@ from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 
-InstrumentationKey = "ce17e582-9778-40b7-b401-1c845c9a2c23"
+InstrumentationKey = "4a028979-e840-4ced-8f02-7165855550d4"
 # Logging
 # TODO: Setup logger
 logger = logging.getLogger(__name__)
