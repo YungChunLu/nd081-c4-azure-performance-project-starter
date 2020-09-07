@@ -14,7 +14,7 @@ from opencensus.trace.tracer import Tracer
 from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 from opencensus.trace.samplers import ProbabilitySampler
-from opencensus.ext.azure.log_exporter import AzureLogHandler
+from opencensus.ext.azure.log_exporter import AzureLogHandler, AzureEventHandler
 
 InstrumentationKey = "4a028979-e840-4ced-8f02-7165855550d4"
 # Logging
@@ -24,6 +24,10 @@ logger = logging.getLogger(__name__)
 logger.addHandler(
     AzureLogHandler(connection_string=f'InstrumentationKey={InstrumentationKey}')
 )
+logger.addHandler(
+    AzureEventHandler(connection_string=f'InstrumentationKey={InstrumentationKey}')
+)
+logger.setLevel(logging.INFO)
 # Metrics
 # TODO: Setup exporter
 exporter = metrics_exporter.new_metrics_exporter(
@@ -83,12 +87,15 @@ def index():
     if request.method == 'GET':
 
         # Get current values
-        vote1 = r.get(button1).decode('utf-8')
+        with tracer.span(name="cats") as span:
+            vote1 = r.get(button1).decode('utf-8')
+            span.add_attribute("value", vote1)
         # TODO: use tracer object to trace cat vote
-        tracer.span(name="cats").add_attribute("value", vote1)
-        vote2 = r.get(button2).decode('utf-8')
+        
+        with tracer.span(name="dogs") as span:
+            vote2 = r.get(button2).decode('utf-8')
+            span.add_attribute("value", vote2)
         # TODO: use tracer object to trace dog vote
-        tracer.span(name="dogs").add_attribute("value", vote2)
 
         # Return index with values
         return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
@@ -127,6 +134,6 @@ def index():
 
 if __name__ == "__main__":
     # comment line below when deploying to VMSS
-    # app.run() # local
+    #app.run(debug=True) # local
     # uncomment the line below before deployment to VMSS
     app.run(host='0.0.0.0', threaded=True, debug=True) # remote
