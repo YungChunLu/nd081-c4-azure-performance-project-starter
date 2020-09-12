@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Variables
-resourceGroup="acdnd-c4-project1"
+resourceGroup="acdnd-c4-project3"
 location="westus2"
 osType="UbuntuLTS"
-vmssName="udacity-vmss1"
+vmssName="udacity-vmss2"
 adminName="udacityadmin"
-storageAccount="udacitydiag0811"
+storageAccount="udacitydiag0812"
 bePoolName="$vmssName-bepool"
 lbName="$vmssName-lb"
 lbRule="$lbName-network-rule"
@@ -16,6 +16,8 @@ subnetName="$vnetName-subnet"
 probeName="tcpProbe"
 vmSize="Standard_B1ls"
 storageType="Standard_LRS"
+vmName="udacity-vm"
+galleryName="udacity-gallery"
 
 # Create resource group
 echo "Creating resource group $resourceGroup..."
